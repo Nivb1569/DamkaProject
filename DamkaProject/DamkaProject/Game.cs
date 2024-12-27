@@ -13,10 +13,11 @@ namespace DamkaProject
 
         public void Run()
         {
-            m_FirstPlayer = new Player(Player.GetName(), Sign.m_SignType.X, false);
+            m_FirstPlayer = new Player(Player.GetName(), Piece.m_PieceType.X, false);
             m_CurrentPlayerTurn = m_FirstPlayer;
             m_Board = new Board(Board.GetSize());
             getSecondPlayer();
+            setTheNumberOfPicesToThePlayers();
             startToPlay();
         }
         private static int gameWithPlayerOrComputer()
@@ -56,23 +57,68 @@ namespace DamkaProject
             int choice = gameWithPlayerOrComputer();
             if (choice == k_HumenPlayer)
             {
-                m_SecondPlayer = new Player(Player.GetName(), Sign.m_SignType.O, false);
+                m_SecondPlayer = new Player(Player.GetName(), Piece.m_PieceType.O, false);
             }
             else
             {
-                m_SecondPlayer = new Player("Computer", Sign.m_SignType.O, true);
+                m_SecondPlayer = new Player("Computer", Piece.m_PieceType.O, true);
             }
         }
         private void startToPlay()
         {
+            bool isJumpMove;
             while(true) // !GameOver
             {
-                Console.WriteLine(m_CurrentPlayerTurn.PlayerName + "'s turn:");
                 m_Board.PrintBoard();
+                Console.WriteLine(m_CurrentPlayerTurn.PlayerName + "'s turn:");
+                m_CurrentPlayerTurn.MakeMove(m_Board, out isJumpMove);
+                if (isJumpMove)
+                {
+                    updateNumberOfPices();
+                }
+                m_Board.UpdateKingCase(m_CurrentPlayerTurn.PlayerPiece); // לבדוק את התזוזה של המלכים, כרגע עבור U לא עובד
+                changeTurn();
+            }
+        }
+        private void changeTurn()
+        {
+            if (m_CurrentPlayerTurn.PlayerName == m_FirstPlayer.PlayerName)
+            {
+                m_CurrentPlayerTurn = m_SecondPlayer;
+            }
+            else
+            {
+                m_CurrentPlayerTurn = m_FirstPlayer;
+            }
+        }
+        private void updateNumberOfPices()
+        {
+            if (m_FirstPlayer.PlayerName == m_CurrentPlayerTurn.PlayerName)
+            {
+                m_SecondPlayer.NumberOfPieces = m_SecondPlayer.NumberOfPieces - 1;
+            }
+            else
+            {
 
-
-
-                Console.ReadLine();
+            }
+            m_FirstPlayer.NumberOfPieces = m_FirstPlayer.NumberOfPieces - 1;
+        }
+        private void setTheNumberOfPicesToThePlayers()
+        {
+            if (m_Board.Size == 6)
+            {
+                m_FirstPlayer.NumberOfPieces = 6;
+                m_SecondPlayer.NumberOfPieces = 6;
+            }
+            else if (m_Board.Size == 8)
+            {
+                m_FirstPlayer.NumberOfPieces = 12;
+                m_SecondPlayer.NumberOfPieces = 12;
+            }
+            else
+            {
+                m_FirstPlayer.NumberOfPieces = 20;
+                m_SecondPlayer.NumberOfPieces = 20;
             }
         }
     }

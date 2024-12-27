@@ -6,15 +6,15 @@ namespace DamkaProject
     class Board
     {
         private int m_Size;
-        private Sign[,] m_GameBoard;
+        private Piece[,] m_GameBoard;
 
         public Board(int i_Size)
         {
             m_Size = i_Size;
-            m_GameBoard = new Sign[m_Size, m_Size];
-            initializeBoard(Sign.m_SignType.X, Sign.m_SignType.O);
+            m_GameBoard = new Piece[m_Size, m_Size];
+            initializeBoard(Piece.m_PieceType.X, Piece.m_PieceType.O);
         }
-        public Sign[,] GameBoard
+        public Piece[,] GameBoard
         {
             get { return m_GameBoard; }
         }
@@ -53,7 +53,7 @@ namespace DamkaProject
         {
             return i_Size == 6 || i_Size == 8 || i_Size == 10;
         }
-        private void initializeBoard(Sign.m_SignType i_FirstSign, Sign.m_SignType i_SecondSign)
+        private void initializeBoard(Piece.m_PieceType i_FirstPiece, Piece.m_PieceType i_SecondPiece)
         {
             makeEmptyBoard();
             for (int i = m_Size - 1; i > m_Size - (m_Size / 2); i--)
@@ -61,7 +61,7 @@ namespace DamkaProject
                 for (int j = 0; j < m_Size; j++)
                 {
                     if ((i + j + 1) % 2 == 0)
-                        m_GameBoard[i, j] = new Sign(i_FirstSign, Sign.m_DirectionType.Up);
+                        m_GameBoard[i, j] = new Piece(i_FirstPiece, Piece.m_DirectionType.Up);
                 }
             }
             for (int i = 0; i < (m_Size / 2) - 1; i++)
@@ -70,7 +70,7 @@ namespace DamkaProject
                 {
                     if ((i + j + 1) % 2 == 0)
                     {
-                        m_GameBoard[i, j] = new Sign(i_SecondSign, Sign.m_DirectionType.Down);
+                        m_GameBoard[i, j] = new Piece(i_SecondPiece, Piece.m_DirectionType.Down);
                     }
                 }
             }
@@ -81,7 +81,7 @@ namespace DamkaProject
             {
                 for (int j = 0; j < m_Size; j++)
                 {
-                    m_GameBoard[i, j] = new Sign(Sign.m_SignType.Empty, Sign.m_DirectionType.Empty);
+                    m_GameBoard[i, j] = new Piece(Piece.m_PieceType.Empty, Piece.m_DirectionType.Empty);
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace DamkaProject
 
                 for (int j = 0; j < m_Size; j++)
                 {
-                    printCell(m_GameBoard[i, j].SignType);
+                    printCell(m_GameBoard[i, j].PieceType);
                 }
                 Console.Write("|\n");
             }
@@ -126,27 +126,50 @@ namespace DamkaProject
             }
             Console.WriteLine();
         }
-        private void printCell(Sign.m_SignType i_Cell)
+        private void printCell(Piece.m_PieceType i_Cell)
         {
-            if (i_Cell == Sign.m_SignType.Empty)
+            if (i_Cell == Piece.m_PieceType.Empty)
             {
                 Console.Write("|   ");
             }
-            else if (i_Cell == Sign.m_SignType.X)
+            else if (i_Cell == Piece.m_PieceType.X)
             {
                 Console.Write("| X ");
             }
-            else if (i_Cell == Sign.m_SignType.O)
+            else if (i_Cell == Piece.m_PieceType.O)
             {
                 Console.Write("| O ");
             }
-            else if (i_Cell == Sign.m_SignType.K)
+            else if (i_Cell == Piece.m_PieceType.K)
             {
                 Console.Write("| K ");
             }
-            else if (i_Cell == Sign.m_SignType.Q)
+            else if (i_Cell == Piece.m_PieceType.U)
             {
-                Console.Write("| Q ");
+                Console.Write("| U ");
+            }
+        }
+        public void UpdateKingCase(Piece.m_PieceType i_PlayerPiece)
+        {
+            if (i_PlayerPiece == Piece.m_PieceType.X)
+            {
+                for (int i = 0; i < m_Size; i++)
+                {
+                    if (m_GameBoard[0, i].PieceType == Piece.m_PieceType.X)
+                    {
+                        m_GameBoard[0, i].PieceType = Piece.m_PieceType.K;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m_Size; i++)
+                {
+                    if (m_GameBoard[m_Size - 1, i].PieceType == Piece.m_PieceType.O)
+                    {
+                        m_GameBoard[m_Size - 1, i].PieceType = Piece.m_PieceType.U;
+                    }
+                }
             }
         }
 
