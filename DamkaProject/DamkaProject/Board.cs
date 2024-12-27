@@ -6,17 +6,21 @@ namespace DamkaProject
     class Board
     {
         private int m_Size;
-        private Sign.m_SignType[,] m_GameBoard;
+        private Sign[,] m_GameBoard;
 
         public Board(int i_Size)
         {
             m_Size = i_Size;
-            m_GameBoard = new Sign.m_SignType[m_Size, m_Size];
-            InitializeBoard(Sign.m_SignType.X, Sign.m_SignType.O);
+            m_GameBoard = new Sign[m_Size, m_Size];
+            initializeBoard(Sign.m_SignType.X, Sign.m_SignType.O);
         }
-        public Sign.m_SignType[,] GameBoard
+        public Sign[,] GameBoard
         {
             get { return m_GameBoard; }
+        }
+        public int Size
+        {
+            get { return m_Size;}
         }
         public static int GetSize()
         {
@@ -49,7 +53,7 @@ namespace DamkaProject
         {
             return i_Size == 6 || i_Size == 8 || i_Size == 10;
         }
-        private void InitializeBoard(Sign.m_SignType i_FirstSign, Sign.m_SignType i_SecondSign)
+        private void initializeBoard(Sign.m_SignType i_FirstSign, Sign.m_SignType i_SecondSign)
         {
             makeEmptyBoard();
             for (int i = m_Size - 1; i > m_Size - (m_Size / 2); i--)
@@ -57,7 +61,7 @@ namespace DamkaProject
                 for (int j = 0; j < m_Size; j++)
                 {
                     if ((i + j + 1) % 2 == 0)
-                        m_GameBoard[i,j] = i_FirstSign;
+                        m_GameBoard[i, j] = new Sign(i_FirstSign, Sign.m_DirectionType.Up);
                 }
             }
             for (int i = 0; i < (m_Size / 2) - 1; i++)
@@ -66,7 +70,7 @@ namespace DamkaProject
                 {
                     if ((i + j + 1) % 2 == 0)
                     {
-                        m_GameBoard[i, j] = i_SecondSign;
+                        m_GameBoard[i, j] = new Sign(i_SecondSign, Sign.m_DirectionType.Down);
                     }
                 }
             }
@@ -77,7 +81,7 @@ namespace DamkaProject
             {
                 for (int j = 0; j < m_Size; j++)
                 {
-                    m_GameBoard[i, j] = Sign.m_SignType.Empty;
+                    m_GameBoard[i, j] = new Sign(Sign.m_SignType.Empty, Sign.m_DirectionType.Empty);
                 }
             }
         }
@@ -93,7 +97,7 @@ namespace DamkaProject
 
                 for (int j = 0; j < m_Size; j++)
                 {
-                    printCell(m_GameBoard[i, j]);
+                    printCell(m_GameBoard[i, j].SignType);
                 }
                 Console.Write("|\n");
             }
