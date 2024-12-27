@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DamkaProject
 {
@@ -10,7 +6,8 @@ namespace DamkaProject
     {
         public static void Main()
         {
-            System.Console.WriteLine("Hi");
+            Board b1 = new Board(10);
+            b1.PrintBoard();
         }
     }
 }
