@@ -6,8 +6,10 @@ namespace DamkaProject
     {
         public static void Main()
         {
-            Board b1 = new Board(10);
-            b1.PrintBoard();
+            Game game = new Game();
+            game.run();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
         }
     }
 }

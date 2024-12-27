@@ -4,7 +4,7 @@ namespace DamkaProject
 {
     class Player
     {
-        String m_PlayerName;
+        String m_PlayerName = null;
         Sign.m_SignType m_PlayerSign;
         bool m_IsComputer;
 
@@ -23,10 +23,10 @@ namespace DamkaProject
         {
             get { return m_PlayerSign; }
         }
-        public static void GetName()
+        public static String GetName()
         {
             bool isValid = false;
-            String name;
+            String name = null;
             while (!isValid)
             {
                 Console.WriteLine("Enter your name: ");
@@ -35,9 +35,15 @@ namespace DamkaProject
                 {
                     Console.WriteLine("Invalid input! Only letters (no spaces or ant other characters) and must be up to 20 characters");
                 }
+                else
+                {
+                    isValid = true;
+                }
             }
+
+            return name;
         }
-        private bool isValidName(String i_Name)
+        private static bool isValidName(String i_Name)
         {
             bool isValid = true;
             if (i_Name.Length > 20)
@@ -48,9 +54,15 @@ namespace DamkaProject
             {
                 for (int i = 0; i < i_Name.Length; i++)
                 {
-
+                    if (!Char.IsLetter(i_Name[i]))
+                    {
+                        isValid = false;
+                        break;
+                    }
                 }
             }
+
+            return isValid;
         }
     }
 }

@@ -12,17 +12,44 @@ namespace DamkaProject
         {
             m_Size = i_Size;
             m_GameBoard = new Sign.m_SignType[m_Size, m_Size];
-            InitializeBoard();
+            InitializeBoard(Sign.m_SignType.X, Sign.m_SignType.O);
         }
         public Sign.m_SignType[,] GameBoard
         {
             get { return m_GameBoard; }
         }
-        public static bool ValidSize(int i_Size)
+        public static int GetSize()
+        {
+            bool isValid = false;
+            int size = 0;
+            while (!isValid)
+            {
+                Console.WriteLine("Enter the board size (6, 8 or 10): ");
+                String input = Console.ReadLine();
+                if (int.TryParse(input, out size))
+                {
+                    if (!isValidSize(size))
+                    {
+                        Console.WriteLine("Invalid input! Only 6, 8 or 10 are valid sizes.");
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Only 6, 8 or 10 are valid sizes.");
+                }
+            }
+
+            return size;
+        }
+        private static bool isValidSize(int i_Size)
         {
             return i_Size == 6 || i_Size == 8 || i_Size == 10;
         }
-        private void InitializeBoard()
+        private void InitializeBoard(Sign.m_SignType i_FirstSign, Sign.m_SignType i_SecondSign)
         {
             makeEmptyBoard();
             for (int i = m_Size - 1; i > m_Size - (m_Size / 2); i--)
@@ -30,7 +57,7 @@ namespace DamkaProject
                 for (int j = 0; j < m_Size; j++)
                 {
                     if ((i + j + 1) % 2 == 0)
-                        m_GameBoard[i,j] = Sign.m_SignType.X;
+                        m_GameBoard[i,j] = i_FirstSign;
                 }
             }
             for (int i = 0; i < (m_Size / 2) - 1; i++)
@@ -39,7 +66,7 @@ namespace DamkaProject
                 {
                     if ((i + j + 1) % 2 == 0)
                     {
-                        m_GameBoard[i, j] = Sign.m_SignType.O;
+                        m_GameBoard[i, j] = i_SecondSign;
                     }
                 }
             }
@@ -108,6 +135,14 @@ namespace DamkaProject
             else if (i_Cell == Sign.m_SignType.O)
             {
                 Console.Write("| O ");
+            }
+            else if (i_Cell == Sign.m_SignType.K)
+            {
+                Console.Write("| K ");
+            }
+            else if (i_Cell == Sign.m_SignType.Q)
+            {
+                Console.Write("| Q ");
             }
         }
 
