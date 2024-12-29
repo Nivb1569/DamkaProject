@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 
 namespace DamkaProject
 {
@@ -65,7 +67,16 @@ namespace DamkaProject
         public void MakeMove(Board i_Board, out bool o_IsJumpMove)
         {
             Point from, to;
-            getMoveChoice(out from, out to, i_Board);
+
+            if (m_IsComputer)
+            {
+                generateMove(out from, out to, i_Board);
+            }
+            else
+            {
+                getMoveChoice(out from, out to, i_Board);
+            }
+
             executeMove(from, to, i_Board, out o_IsJumpMove);
         }
         private static bool allCharectersIsLetters(String i_Name)
@@ -179,7 +190,7 @@ namespace DamkaProject
                 }
 
             }
-            return result; 
+            return result;
         }
         private bool isMoveDiagonally(Point i_From, Point i_To, Board i_Board)
         {
@@ -221,11 +232,11 @@ namespace DamkaProject
             {
                 if (direction == Piece.m_DirectionType.Up)
                 {
-                    if ((i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y && 
+                    if ((i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.O ||
                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.U))
-                        || 
-                       (i_From.X - 2 == i_To.X && i_From.Y - 2 == i_To.Y && 
+                        ||
+                       (i_From.X - 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.U)))
                     {
@@ -254,9 +265,9 @@ namespace DamkaProject
                         (i_From.X + 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.X ||
                          i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)) ||
-                        (i_From.X + 2 == i_To.X && i_From.Y - 2 == i_To.Y && 
+                        (i_From.X + 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)) || 
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)) ||
                         (i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.X ||
                          i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)))
@@ -345,5 +356,74 @@ namespace DamkaProject
             get { return m_NumberOfPieces; }
             set { m_NumberOfPieces = value; }
         }
+
+        private void generateMove(out Point o_From, out Point o_To, Board i_Board)
+        {
+            o_From = null;
+            o_To = null;
+
+            //go over all the computer positions and colloct all the possibles positions and select one
+            List<Point[]> possiblePositions = new List<Point[]>();
+            possiblePositions = createPossiblePositionsList(i_Board);
+            //choseNextMove(possoblePositions,out o_From, out o_To);
+        }
+
+        private List<Point[]> createPossiblePositionsList(Board i_Board)
+        {
+
+            List<Point[]> possiblePositions = new List<Point[]>(); 
+
+            for (int i = 0; i < i_Board.Size; i++)
+            {
+                for (int j = 0; j < i_Board.Size; j++)
+                {
+                    Point currentFrom = new Point(i, j);
+                    if (i_Board.GameBoard[i,j].PieceType == Piece.m_PieceType.O)
+                    {
+                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.m_PieceType.O);
+                    }
+                    else if (i_Board.GameBoard[i,j].PieceType == Piece.m_PieceType.U)
+                    {
+                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.m_PieceType.U);
+                    }
+                }
+            }
+
+            return possiblePositions;
+        }
+
+        private void checkAndAddPossiblePositions(Board i_Board, Point i_CurrentFrom, List<Point[]> io_PossiblePositions, Piece.m_PieceType i_PieceType)
+        {
+            if (i_PieceType == Piece.m_PieceType.O)
+            {
+                //check with niv if this is the actual x and y
+                Point currentTo = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y + 1);
+
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+                currentTo.X += 1;
+                currentTo.Y += 1;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+                currentTo.X -= 2;
+                currentTo.Y += 2;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+                currentTo.X += 2;
+                currentTo.Y += 2;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+
+            }
+            else //this is U
+            {
+
+
+            }
+        }
+        private void checkLegalAndAddToList(Board i_Board, Point i_CurrentFrom, Point i_CurrentTo, List<Point[]> io_PossiblePositions)
+        {
+            if (isLegalMove(i_CurrentFrom, i_CurrentTo, i_Board))
+            {
+                io_PossiblePositions.Add(new Point[] { i_CurrentFrom, i_CurrentTo });
+            }
+        }
     }
+
 }

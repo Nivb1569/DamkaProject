@@ -99,9 +99,8 @@ namespace DamkaProject
             }
             else
             {
-
+                m_FirstPlayer.NumberOfPieces = m_FirstPlayer.NumberOfPieces - 1;
             }
-            m_FirstPlayer.NumberOfPieces = m_FirstPlayer.NumberOfPieces - 1;
         }
         private void setTheNumberOfPicesToThePlayers()
         {
