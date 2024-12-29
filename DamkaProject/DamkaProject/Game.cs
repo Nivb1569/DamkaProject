@@ -149,12 +149,22 @@ namespace DamkaProject
                 m_Winner = m_FirstPlayer; 
             }
         }
-        private void checkGameStatus()
+        private void checkGameStatus() 
         {
             if (m_FirstPlayer.NumberOfPieces == 0 || m_SecondPlayer.NumberOfPieces == 0)
             {
                 GameOver = true;
                 m_Winner = m_FirstPlayer.NumberOfPieces == 0? m_SecondPlayer:m_FirstPlayer;
+            }
+            else if (m_FirstPlayer.NoMovesLeft(m_Board) && m_SecondPlayer == m_CurrentPlayerTurn)
+            {
+                GameOver = true;
+                m_Winner = m_SecondPlayer;
+            }
+            else if (m_SecondPlayer.NoMovesLeft(m_Board) && m_FirstPlayer == m_CurrentPlayerTurn)
+            {
+                GameOver = true;
+                m_Winner = m_FirstPlayer;
             }
             else if (m_FirstPlayer.NoMovesLeft(m_Board) && m_SecondPlayer.NoMovesLeft(m_Board))
             {

@@ -456,7 +456,7 @@ namespace DamkaProject
             {
                 for (int j = 0; j < i_Board.Size - 1; j++)
                 {
-                    if (i_Board.GameBoard[i, j].PieceType != Piece.e_PieceType.Empty && !isStuckPiece(new Point(i, j), i_Board))
+                    if ((isPlayerPiece(i_Board.GameBoard[i, j].PieceType)) && !isStuckPiece(new Point(i, j), i_Board))
                     {
                         isTie = false;
                         break;
@@ -470,6 +470,12 @@ namespace DamkaProject
             }
 
             return isTie;
+        }
+        private bool isPlayerPiece(Piece.e_PieceType i_TypePeice)
+        {
+            return (i_TypePeice == m_PlayerPiece) ||
+                ((m_PlayerPiece == Piece.e_PieceType.O && i_TypePeice == Piece.e_PieceType.U) ||
+                (m_PlayerPiece == Piece.e_PieceType.X && i_TypePeice == Piece.e_PieceType.K));
         }
         private bool isStuckPiece(Point i_From, Board i_Board)
         {
