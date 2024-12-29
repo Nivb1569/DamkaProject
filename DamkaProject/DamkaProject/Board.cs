@@ -25,7 +25,7 @@ namespace DamkaProject
         public static int GetSize()
         {
             bool isValid = false;
-            int size = 0;
+            int size = 0; //need to delete
             while (!isValid)
             {
                 Console.WriteLine("Enter the board size (6, 8 or 10): ");

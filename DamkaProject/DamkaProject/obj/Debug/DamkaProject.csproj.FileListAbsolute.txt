@@ -6,3 +6,10 @@ C:\Users\Asus\Desktop\DamkaProject\DamkaProject\DamkaProject\DamkaProject\obj\De
 C:\Users\Asus\Desktop\DamkaProject\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.csproj.CoreCompileInputs.cache
 C:\Users\Asus\Desktop\DamkaProject\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.exe
 C:\Users\Asus\Desktop\DamkaProject\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.pdb
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\bin\Debug\DamkaProject.exe.config
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\bin\Debug\DamkaProject.exe
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\bin\Debug\DamkaProject.pdb
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.csproj.AssemblyReference.cache
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.csproj.CoreCompileInputs.cache
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.exe
+C:\Users\nahmi\source\repos\C# Projects\DamkaProject\DamkaProject\DamkaProject\obj\Debug\DamkaProject.pdb
