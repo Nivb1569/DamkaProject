@@ -158,6 +158,7 @@ namespace DamkaProject
                     if (m_GameBoard[0, i].PieceType == Piece.m_PieceType.X)
                     {
                         m_GameBoard[0, i].PieceType = Piece.m_PieceType.K;
+                        m_GameBoard[0, i].DirectionType = Piece.m_DirectionType.Both;
                     }
                 }
             }
@@ -168,6 +169,7 @@ namespace DamkaProject
                     if (m_GameBoard[m_Size - 1, i].PieceType == Piece.m_PieceType.O)
                     {
                         m_GameBoard[m_Size - 1, i].PieceType = Piece.m_PieceType.U;
+                        m_GameBoard[m_Size - 1, i].DirectionType = Piece.m_DirectionType.Both;
                     }
                 }
             }

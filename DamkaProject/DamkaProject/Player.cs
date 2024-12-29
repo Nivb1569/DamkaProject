@@ -160,12 +160,26 @@ namespace DamkaProject
         private bool isLegalMove(Point i_From, Point i_To, Board i_Board)
         {
             bool isValid = false;
-            if ((i_Board.GameBoard[i_From.X, i_From.Y].PieceType == m_PlayerPiece) && (isMoveDiagonally(i_From, i_To, i_Board) || isJump(i_From, i_To, i_Board)))
+            if ((theMoveFromThePlayerSquare(i_Board.GameBoard[i_From.X, i_From.Y].PieceType)) && (isMoveDiagonally(i_From, i_To, i_Board) || isJump(i_From, i_To, i_Board)))
             {
                 isValid = true;
             }
 
             return isValid;
+        }
+        private bool theMoveFromThePlayerSquare(Piece.m_PieceType i_PeiceType)
+        {
+            bool result = i_PeiceType == m_PlayerPiece;
+            if (result == false)
+            {
+                if (m_PlayerPiece == Piece.m_PieceType.O && i_PeiceType == Piece.m_PieceType.U
+                    || m_PlayerPiece == Piece.m_PieceType.X && i_PeiceType == Piece.m_PieceType.K)
+                {
+                    result = true;
+                }
+
+            }
+            return result; 
         }
         private bool isMoveDiagonally(Point i_From, Point i_To, Board i_Board)
         {
@@ -245,8 +259,8 @@ namespace DamkaProject
                         (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.X ||
                          i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)) || 
                         (i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.X ||
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)))
                     {
                         makeJump = true;
                     }
@@ -255,17 +269,17 @@ namespace DamkaProject
                 {
                     if ((i_From.X - 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K))
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.U))
                         ||
                         (i_From.X + 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)) ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.U)) ||
                         (i_From.X + 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
                         (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)) ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.U)) ||
                         (i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.O ||
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.U)))
                     {
                         makeJump = true;
                     }
