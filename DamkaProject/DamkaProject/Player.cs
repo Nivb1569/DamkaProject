@@ -35,7 +35,7 @@ namespace DamkaProject
                 name = Console.ReadLine();
                 if (!isValidName(name))
                 {
-                    Console.WriteLine("Invalid input! Only letters (no spaces or ant other characters) and must be up to 20 characters");
+                    Console.WriteLine("Invalid input! Only letters (no spaces or any other characters) and must be up to 20 characters");
                 }
                 else
                 {
@@ -213,7 +213,6 @@ namespace DamkaProject
 
             return isDiagonally;
         }
-
         private bool isJump(Point i_From, Point i_To, Board i_Board)
         {
             bool makeJump = false;

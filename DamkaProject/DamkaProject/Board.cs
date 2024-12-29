@@ -87,7 +87,7 @@ namespace DamkaProject
         }
         public void PrintBoard()
         {
-            char rows = 'a';
+            char rows = 'A';
             printHeader();
 
             for (int i = 0; i < m_Size; i++)
@@ -113,7 +113,7 @@ namespace DamkaProject
         }
         private void printHeader()
         {
-            char columns = 'A';
+            char columns = 'a';
             Console.WriteLine();
 
             for (int i = 0; i < m_Size; i++)
