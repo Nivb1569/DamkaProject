@@ -7,12 +7,12 @@ namespace DamkaProject
     class Player
     {
         private String m_PlayerName = null;
-        private Piece.m_PieceType m_PlayerPiece;
+        private Piece.e_PieceType m_PlayerPiece;
         private int m_NumberOfPieces = 0;
         private int m_Points = 0;
         private bool m_IsComputer;
 
-        public Player(String i_PlayerName, Piece.m_PieceType i_PlayerPiece, bool i_IsComputer)
+        public Player(String i_PlayerName, Piece.e_PieceType i_PlayerPiece, bool i_IsComputer)
         {
             PlayerName = i_PlayerName;
             m_PlayerPiece = i_PlayerPiece;
@@ -23,7 +23,7 @@ namespace DamkaProject
             get { return m_PlayerName; }
             set { m_PlayerName = value; }
         }
-        public Piece.m_PieceType PlayerPiece
+        public Piece.e_PieceType PlayerPiece
         {
             get { return m_PlayerPiece; }
         }
@@ -178,13 +178,13 @@ namespace DamkaProject
 
             return isValid;
         }
-        private bool theMoveFromThePlayerSquare(Piece.m_PieceType i_PeiceType)
+        private bool theMoveFromThePlayerSquare(Piece.e_PieceType i_PeiceType)
         {
             bool result = i_PeiceType == m_PlayerPiece;
             if (result == false)
             {
-                if (m_PlayerPiece == Piece.m_PieceType.O && i_PeiceType == Piece.m_PieceType.U
-                    || m_PlayerPiece == Piece.m_PieceType.X && i_PeiceType == Piece.m_PieceType.K)
+                if (m_PlayerPiece == Piece.e_PieceType.O && i_PeiceType == Piece.e_PieceType.U
+                    || m_PlayerPiece == Piece.e_PieceType.X && i_PeiceType == Piece.e_PieceType.K)
                 {
                     result = true;
                 }
@@ -195,25 +195,25 @@ namespace DamkaProject
         private bool isMoveDiagonally(Point i_From, Point i_To, Board i_Board)
         {
             bool isDiagonally = false;
-            Piece.m_DirectionType direction = i_Board.GameBoard[i_From.X, i_From.Y].DirectionType;
+            Piece.e_DirectionType direction = i_Board.GameBoard[i_From.X, i_From.Y].DirectionType;
 
-            if (i_Board.GameBoard[i_To.X, i_To.Y].PieceType == Piece.m_PieceType.Empty)
+            if (i_Board.GameBoard[i_To.X, i_To.Y].PieceType == Piece.e_PieceType.Empty)
             {
-                if (direction == Piece.m_DirectionType.Up)
+                if (direction == Piece.e_DirectionType.Up)
                 {
                     if ((i_From.X - 1 == i_To.X && i_From.Y + 1 == i_To.Y) || (i_From.X - 1 == i_To.X && i_From.Y - 1 == i_To.Y))
                     {
                         isDiagonally = true;
                     }
                 }
-                else if (direction == Piece.m_DirectionType.Down)
+                else if (direction == Piece.e_DirectionType.Down)
                 {
                     if ((i_From.X + 1 == i_To.X && i_From.Y - 1 == i_To.Y) || (i_From.X + 1 == i_To.X && i_From.Y + 1 == i_To.Y))
                     {
                         isDiagonally = true;
                     }
                 }
-                else if (direction == Piece.m_DirectionType.Both)
+                else if (direction == Piece.e_DirectionType.Both)
                 {
                     if ((i_From.X - 1 == i_To.X && i_From.Y - 1 == i_To.Y) || (i_From.X + 1 == i_To.X && i_From.Y + 1 == i_To.Y) || (i_From.X + 1 == i_To.X && i_From.Y - 1 == i_To.Y) || (i_From.X - 1 == i_To.X && i_From.Y + 1 == i_To.Y))
                     {
@@ -227,69 +227,69 @@ namespace DamkaProject
         private bool isJump(Point i_From, Point i_To, Board i_Board)
         {
             bool makeJump = false;
-            Piece.m_DirectionType direction = i_Board.GameBoard[i_From.X, i_From.Y].DirectionType;
-            if (i_Board.GameBoard[i_To.X, i_To.Y].PieceType == Piece.m_PieceType.Empty)
+            Piece.e_DirectionType direction = i_Board.GameBoard[i_From.X, i_From.Y].DirectionType;
+            if (i_Board.GameBoard[i_To.X, i_To.Y].PieceType == Piece.e_PieceType.Empty)
             {
-                if (direction == Piece.m_DirectionType.Up)
+                if (direction == Piece.e_DirectionType.Up)
                 {
                     if ((i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.O ||
-                        i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.U))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.e_PieceType.O ||
+                        i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.e_PieceType.U))
                         ||
                        (i_From.X - 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
-                        i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.U)))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.e_PieceType.O ||
+                        i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.e_PieceType.U)))
                     {
                         makeJump = true;
                     }
                 }
-                else if (direction == Piece.m_DirectionType.Down)
+                else if (direction == Piece.e_DirectionType.Down)
                 {
                     if ((i_From.X + 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K))
+                        (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.e_PieceType.X ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.e_PieceType.K))
                          ||
                         (i_From.X + 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                         (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)))
+                         (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.e_PieceType.X ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.e_PieceType.K)))
                     {
                         makeJump = true;
                     }
                 }
-                else if (direction == Piece.m_DirectionType.Both && m_PlayerPiece == Piece.m_PieceType.O)
+                else if (direction == Piece.e_DirectionType.Both && m_PlayerPiece == Piece.e_PieceType.O)
                 {
                     if ((i_From.X - 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.e_PieceType.X ||
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.e_PieceType.K))
                         ||
                         (i_From.X + 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)) ||
+                        (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.e_PieceType.X ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.e_PieceType.K)) ||
                         (i_From.X + 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.K)) ||
+                        (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.e_PieceType.X ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.e_PieceType.K)) ||
                         (i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.X ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.K)))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.e_PieceType.X ||
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.e_PieceType.K)))
                     {
                         makeJump = true;
                     }
                 }
-                else if (direction == Piece.m_DirectionType.Both && m_PlayerPiece == Piece.m_PieceType.X)
+                else if (direction == Piece.e_DirectionType.Both && m_PlayerPiece == Piece.e_PieceType.X)
                 {
                     if ((i_From.X - 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.m_PieceType.U))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.e_PieceType.O ||
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType == Piece.e_PieceType.U))
                         ||
                         (i_From.X + 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.m_PieceType.U)) ||
+                        (i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.e_PieceType.O ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType == Piece.e_PieceType.U)) ||
                         (i_From.X + 2 == i_To.X && i_From.Y - 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.m_PieceType.U)) ||
+                        (i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.e_PieceType.O ||
+                         i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType == Piece.e_PieceType.U)) ||
                         (i_From.X - 2 == i_To.X && i_From.Y + 2 == i_To.Y &&
-                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.O ||
-                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.m_PieceType.U)))
+                        (i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.e_PieceType.O ||
+                         i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType == Piece.e_PieceType.U)))
                     {
                         makeJump = true;
                     }
@@ -304,38 +304,38 @@ namespace DamkaProject
             {
                 i_Board.GameBoard[i_To.X, i_To.Y].PieceType = i_Board.GameBoard[i_From.X, i_From.Y].PieceType;
                 i_Board.GameBoard[i_To.X, i_To.Y].DirectionType = i_Board.GameBoard[i_From.X, i_From.Y].DirectionType;
-                i_Board.GameBoard[i_From.X, i_From.Y].PieceType = Piece.m_PieceType.Empty;
-                i_Board.GameBoard[i_From.X, i_From.Y].DirectionType = Piece.m_DirectionType.Empty;
+                i_Board.GameBoard[i_From.X, i_From.Y].PieceType = Piece.e_PieceType.Empty;
+                i_Board.GameBoard[i_From.X, i_From.Y].DirectionType = Piece.e_DirectionType.Empty;
                 o_IsJumpMove = false;
             }
             else
             {
                 if (fromDownToUpRight(i_From, i_To))
                 {
-                    i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType = Piece.m_PieceType.Empty;
-                    i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].DirectionType = Piece.m_DirectionType.Empty;
+                    i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].PieceType = Piece.e_PieceType.Empty;
+                    i_Board.GameBoard[i_From.X - 1, i_From.Y + 1].DirectionType = Piece.e_DirectionType.Empty;
                 }
                 else if (fromDownToUpLeft(i_From, i_To))
                 {
-                    i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType = Piece.m_PieceType.Empty;
-                    i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].DirectionType = Piece.m_DirectionType.Empty;
+                    i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].PieceType = Piece.e_PieceType.Empty;
+                    i_Board.GameBoard[i_From.X - 1, i_From.Y - 1].DirectionType = Piece.e_DirectionType.Empty;
 
                 }
                 else if (fromUpToDownLeft(i_From, i_To))
                 {
-                    i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType = Piece.m_PieceType.Empty;
-                    i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].DirectionType = Piece.m_DirectionType.Empty;
+                    i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].PieceType = Piece.e_PieceType.Empty;
+                    i_Board.GameBoard[i_From.X + 1, i_From.Y - 1].DirectionType = Piece.e_DirectionType.Empty;
                 }
                 else
                 {
-                    i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType = Piece.m_PieceType.Empty;
-                    i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].DirectionType = Piece.m_DirectionType.Empty;
+                    i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].PieceType = Piece.e_PieceType.Empty;
+                    i_Board.GameBoard[i_From.X + 1, i_From.Y + 1].DirectionType = Piece.e_DirectionType.Empty;
 
                 }
                 i_Board.GameBoard[i_To.X, i_To.Y].PieceType = i_Board.GameBoard[i_From.X, i_From.Y].PieceType;
                 i_Board.GameBoard[i_To.X, i_To.Y].DirectionType = i_Board.GameBoard[i_From.X, i_From.Y].DirectionType;
-                i_Board.GameBoard[i_From.X, i_From.Y].PieceType = Piece.m_PieceType.Empty;
-                i_Board.GameBoard[i_From.X, i_From.Y].DirectionType = Piece.m_DirectionType.Empty;
+                i_Board.GameBoard[i_From.X, i_From.Y].PieceType = Piece.e_PieceType.Empty;
+                i_Board.GameBoard[i_From.X, i_From.Y].DirectionType = Piece.e_DirectionType.Empty;
                 o_IsJumpMove = true;
             }
         }
@@ -378,13 +378,13 @@ namespace DamkaProject
                 for (int j = 0; j < i_Board.Size; j++)
                 {
                     Point currentFrom = new Point(i, j);
-                    if (i_Board.GameBoard[i,j].PieceType == Piece.m_PieceType.O)
+                    if (i_Board.GameBoard[i,j].PieceType == Piece.e_PieceType.O)
                     {
-                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.m_PieceType.O);
+                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.e_PieceType.O);
                     }
-                    else if (i_Board.GameBoard[i,j].PieceType == Piece.m_PieceType.U)
+                    else if (i_Board.GameBoard[i,j].PieceType == Piece.e_PieceType.U)
                     {
-                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.m_PieceType.U);
+                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.e_PieceType.U);
                     }
                 }
             }
@@ -392,9 +392,9 @@ namespace DamkaProject
             return possiblePositions;
         }
 
-        private void checkAndAddPossiblePositions(Board i_Board, Point i_CurrentFrom, List<Point[]> io_PossiblePositions, Piece.m_PieceType i_PieceType)
+        private void checkAndAddPossiblePositions(Board i_Board, Point i_CurrentFrom, List<Point[]> io_PossiblePositions, Piece.e_PieceType i_PieceType)
         {
-            if (i_PieceType == Piece.m_PieceType.O)
+            if (i_PieceType == Piece.e_PieceType.O)
             {
                 //check with niv if this is the actual x and y
                 Point currentTo = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y + 1);

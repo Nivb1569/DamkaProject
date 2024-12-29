@@ -13,7 +13,7 @@ namespace DamkaProject
 
         public void Run()
         {
-            m_FirstPlayer = new Player(Player.GetName(), Piece.m_PieceType.X, false);
+            m_FirstPlayer = new Player(Player.GetName(), Piece.e_PieceType.X, false);
             m_CurrentPlayerTurn = m_FirstPlayer;
             m_Board = new Board(Board.GetSize());
             getSecondPlayer();
@@ -57,11 +57,11 @@ namespace DamkaProject
             int choice = gameWithPlayerOrComputer();
             if (choice == k_HumenPlayer)
             {
-                m_SecondPlayer = new Player(Player.GetName(), Piece.m_PieceType.O, false);
+                m_SecondPlayer = new Player(Player.GetName(), Piece.e_PieceType.O, false);
             }
             else
             {
-                m_SecondPlayer = new Player("Computer", Piece.m_PieceType.O, true);
+                m_SecondPlayer = new Player("Computer", Piece.e_PieceType.O, true);
             }
         }
         private void startToPlay()
