@@ -27,7 +27,7 @@ namespace DamkaProject
         {
             get { return m_PlayerPiece; }
         }
-        public static String GetName()
+        public static String GetName(String i_FirstName = null)
         {
             bool isValid = false;
             String name = null;
@@ -39,6 +39,10 @@ namespace DamkaProject
                 {
                     Console.WriteLine("Invalid input! Only letters (no spaces or any other characters) and must be up to 20 characters");
                 }
+                else if (isTheSameNameAsTheOtherPlayer(name, i_FirstName))
+                {
+                    Console.WriteLine("Invalid input! You must Choose a diffrent.");
+                }
                 else
                 {
                     isValid = true;
@@ -46,6 +50,10 @@ namespace DamkaProject
             }
 
             return name;
+        }
+        private static bool isTheSameNameAsTheOtherPlayer(String i_Name, String i_FirstName)
+        {
+            return i_Name == i_FirstName || i_Name == "Computer";
         }
         private static bool isValidName(String i_Name)
         {
@@ -444,9 +452,9 @@ namespace DamkaProject
         public bool NoMovesLeft(Board i_Board)
         {
             bool isTie = true;
-            for (int i = 0; i < i_Board.Size; i++)
+            for (int i = 0; i < i_Board.Size - 1; i++)
             {
-                for (int j = 0; j < i_Board.Size; j++)
+                for (int j = 0; j < i_Board.Size - 1; j++)
                 {
                     if (i_Board.GameBoard[i, j].PieceType != Piece.e_PieceType.Empty && !isStuckPiece(new Point(i, j), i_Board))
                     {
@@ -466,19 +474,43 @@ namespace DamkaProject
         private bool isStuckPiece(Point i_From, Board i_Board)
         {
             bool isStuckPiece = true;
-            if (isMoveDiagonally(i_From, new Point(i_From.X - 1, i_From.Y - 1), i_Board) ||
-                isMoveDiagonally(i_From, new Point(i_From.X - 1, i_From.Y + 1), i_Board) ||
-                isMoveDiagonally(i_From, new Point(i_From.X + 1, i_From.Y - 1), i_Board) ||
-                isMoveDiagonally(i_From, new Point(i_From.X + 1, i_From.Y + 1), i_Board) ||
-                isJump(i_From, new Point(i_From.X - 2, i_From.Y - 2), i_Board)           ||
-                isJump(i_From, new Point(i_From.X - 2, i_From.Y + 2), i_Board)           ||
-                isJump(i_From, new Point(i_From.X + 2, i_From.Y - 2), i_Board)           ||
-                isJump(i_From, new Point(i_From.X + 2, i_From.Y + 2), i_Board))
+            if (isMoveDiagonallyWithValidation(i_From, new Point(i_From.X - 1, i_From.Y - 1), i_Board) ||
+                isMoveDiagonallyWithValidation(i_From, new Point(i_From.X - 1, i_From.Y + 1), i_Board) ||
+                isMoveDiagonallyWithValidation(i_From, new Point(i_From.X + 1, i_From.Y - 1), i_Board) ||
+                isMoveDiagonallyWithValidation(i_From, new Point(i_From.X + 1, i_From.Y + 1), i_Board) ||
+                isJumpWithValidation(i_From, new Point(i_From.X - 2, i_From.Y - 2), i_Board)           ||
+                isJumpWithValidation(i_From, new Point(i_From.X - 2, i_From.Y + 2), i_Board)           ||
+                isJumpWithValidation(i_From, new Point(i_From.X + 2, i_From.Y - 2), i_Board)           ||
+                isJumpWithValidation(i_From, new Point(i_From.X + 2, i_From.Y + 2), i_Board))
             {
                 isStuckPiece = false;
             }
 
             return isStuckPiece;
+        }
+        private bool isLegalPoint(Point i_From, Point i_To, Board i_Board)
+        {
+            return i_To.X >= 0 && i_To.X < i_Board.Size && i_To.Y >= 0 && i_To.Y < i_Board.Size;
+        }
+        private bool isMoveDiagonallyWithValidation(Point i_From, Point i_To, Board i_Board)
+        {
+            bool result = false;
+            if (isLegalPoint(i_From, i_To, i_Board))
+            {
+                result = isMoveDiagonally(i_From, i_To, i_Board);
+            }
+
+            return result;
+        }
+        private bool isJumpWithValidation(Point i_From, Point i_To, Board i_Board)
+        {
+            bool result = false;
+            if (isLegalPoint(i_From, i_To, i_Board))
+            {
+                result = isJump(i_From, i_To, i_Board);
+            }
+
+            return result;
         }
     }
 

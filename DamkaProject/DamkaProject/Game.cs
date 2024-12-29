@@ -58,7 +58,7 @@ namespace DamkaProject
             int choice = gameWithPlayerOrComputer();
             if (choice == k_HumenPlayer)
             {
-                m_SecondPlayer = new Player(Player.GetName(), Piece.e_PieceType.O, false);
+                m_SecondPlayer = new Player(Player.GetName(m_FirstPlayer.PlayerName), Piece.e_PieceType.O, false);
             }
             else
             {
@@ -68,7 +68,7 @@ namespace DamkaProject
         private void startToPlay()
         {
             bool isJumpMove, isQuitInput;
-            while (true) // WantToPlay another game varabile.
+            while (true) // WantToPlay - another game varabile.
             {
                 // Inits.
                 while (!GameOver) // !GameOver
@@ -89,6 +89,7 @@ namespace DamkaProject
                     checkGameStatus();
                     changeTurn();
                 }
+                // תרצה לשחק עוד סיבוב?
                 //סיכום של המשחק והניקוד
             }
         }
