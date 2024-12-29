@@ -189,14 +189,14 @@ namespace DamkaProject
         private bool isLegalMove(Point i_From, Point i_To, Board i_Board)
         {
             bool isValid = false;
-            if ((theMoveFromThePlayerSquare(i_Board.GameBoard[i_From.X, i_From.Y].PieceType)) && (isMoveDiagonally(i_From, i_To, i_Board) || isJump(i_From, i_To, i_Board)))
+            if ((theMoveIsFromThePlayerSquare(i_Board.GameBoard[i_From.X, i_From.Y].PieceType)) && (isMoveDiagonally(i_From, i_To, i_Board) || isJump(i_From, i_To, i_Board)))
             {
                 isValid = true;
             }
 
             return isValid;
         }
-        private bool theMoveFromThePlayerSquare(Piece.e_PieceType i_PeiceType)
+        private bool theMoveIsFromThePlayerSquare(Piece.e_PieceType i_PeiceType)
         {
             bool result = i_PeiceType == m_PlayerPiece;
             if (result == false)
@@ -206,7 +206,6 @@ namespace DamkaProject
                 {
                     result = true;
                 }
-
             }
             return result;
         }
@@ -389,18 +388,18 @@ namespace DamkaProject
         private List<Point[]> createPossiblePositionsList(Board i_Board)
         {
 
-            List<Point[]> possiblePositions = new List<Point[]>(); 
+            List<Point[]> possiblePositions = new List<Point[]>();
 
             for (int i = 0; i < i_Board.Size; i++)
             {
                 for (int j = 0; j < i_Board.Size; j++)
                 {
                     Point currentFrom = new Point(i, j);
-                    if (i_Board.GameBoard[i,j].PieceType == Piece.e_PieceType.O)
+                    if (i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.O)
                     {
                         checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.e_PieceType.O);
                     }
-                    else if (i_Board.GameBoard[i,j].PieceType == Piece.e_PieceType.U)
+                    else if (i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.U)
                     {
                         checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.e_PieceType.U);
                     }
@@ -414,7 +413,7 @@ namespace DamkaProject
         {
             if (i_PieceType == Piece.e_PieceType.O)
             {
-                //check with niv if this is the actual x and y
+                //check with niv if this is the actual x and y - checked!
                 Point currentTo = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y + 1);
 
                 checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
@@ -441,6 +440,45 @@ namespace DamkaProject
             {
                 io_PossiblePositions.Add(new Point[] { i_CurrentFrom, i_CurrentTo });
             }
+        }
+        public bool NoMovesLeft(Board i_Board)
+        {
+            bool isTie = true;
+            for (int i = 0; i < i_Board.Size; i++)
+            {
+                for (int j = 0; j < i_Board.Size; j++)
+                {
+                    if (i_Board.GameBoard[i, j].PieceType != Piece.e_PieceType.Empty && !isStuckPiece(new Point(i, j), i_Board))
+                    {
+                        isTie = false;
+                        break;
+                    }
+                }
+
+                if (!isTie)
+                {
+                    break;
+                }
+            }
+
+            return isTie;
+        }
+        private bool isStuckPiece(Point i_From, Board i_Board)
+        {
+            bool isStuckPiece = true;
+            if (isMoveDiagonally(i_From, new Point(i_From.X - 1, i_From.Y - 1), i_Board) ||
+                isMoveDiagonally(i_From, new Point(i_From.X - 1, i_From.Y + 1), i_Board) ||
+                isMoveDiagonally(i_From, new Point(i_From.X + 1, i_From.Y - 1), i_Board) ||
+                isMoveDiagonally(i_From, new Point(i_From.X + 1, i_From.Y + 1), i_Board) ||
+                isJump(i_From, new Point(i_From.X - 2, i_From.Y - 2), i_Board)           ||
+                isJump(i_From, new Point(i_From.X - 2, i_From.Y + 2), i_Board)           ||
+                isJump(i_From, new Point(i_From.X + 2, i_From.Y - 2), i_Board)           ||
+                isJump(i_From, new Point(i_From.X + 2, i_From.Y + 2), i_Board))
+            {
+                isStuckPiece = false;
+            }
+
+            return isStuckPiece;
         }
     }
 
