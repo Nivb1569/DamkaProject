@@ -64,20 +64,28 @@ namespace DamkaProject
 
             return isValid;
         }
-        public void MakeMove(Board i_Board, out bool o_IsJumpMove)
+        public void MakeMove(Board i_Board, out bool o_IsJumpMove, out bool o_IsQuitInput)
         {
             Point from, to;
 
             if (m_IsComputer)
             {
+                o_IsQuitInput = false;
                 generateMove(out from, out to, i_Board);
             }
             else
             {
-                getMoveChoice(out from, out to, i_Board);
+                getMoveChoice(out from, out to, i_Board, out o_IsQuitInput);
             }
 
-            executeMove(from, to, i_Board, out o_IsJumpMove);
+            if (!o_IsQuitInput)
+            {
+                executeMove(from, to, i_Board, out o_IsJumpMove);
+            }
+            else
+            {
+                o_IsJumpMove = false;
+            }
         }
         private static bool allCharectersIsLetters(String i_Name)
         {
@@ -93,23 +101,33 @@ namespace DamkaProject
 
             return result;
         }
-        private void getMoveChoice(out Point o_From, out Point o_To, Board i_Board)
+        private void getMoveChoice(out Point o_From, out Point o_To, Board i_Board, out bool o_IsQuitInput)
         {
             bool isValid = false;
-            String choice = null;
+            String choice;
             o_To = null;
             o_From = null;
+            o_IsQuitInput = false;
             while (!isValid)
             {
                 choice = Console.ReadLine();
-                if (!isValidChoice(choice, i_Board))
+                if (choice == "Q")
                 {
-                    Console.WriteLine("Invalid step! Please try again.");
+                    o_IsQuitInput = true;
+                    return;
                 }
                 else
                 {
-                    isValid = true;
-                    converteLettersToPoint(choice.Split('>'), ref o_From, ref o_To);
+                    o_IsQuitInput = false;
+                    if (!isValidChoice(choice, i_Board))
+                    {
+                        Console.WriteLine("Invalid step! Please try again.");
+                    }
+                    else
+                    {
+                        isValid = true;
+                        converteLettersToPoint(choice.Split('>'), ref o_From, ref o_To);
+                    }
                 }
             }
 

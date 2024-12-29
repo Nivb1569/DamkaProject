@@ -66,19 +66,24 @@ namespace DamkaProject
         }
         private void startToPlay()
         {
-            bool isJumpMove;
-            while(true) // !GameOver
+            bool isJumpMove, isQuitInput;
+            while (true) // !GameOver
             {
                 m_Board.PrintBoard();
                 Console.WriteLine(m_CurrentPlayerTurn.PlayerName + "'s turn:");
-                m_CurrentPlayerTurn.MakeMove(m_Board, out isJumpMove);
+                m_CurrentPlayerTurn.MakeMove(m_Board, out isJumpMove, out isQuitInput);
+                if (isQuitInput)
+                {
+                    break;
+                }
                 if (isJumpMove)
                 {
                     updateNumberOfPices();
                 }
-                m_Board.UpdateKingCase(m_CurrentPlayerTurn.PlayerPiece); // לבדוק את התזוזה של המלכים, כרגע עבור U לא עובד
+                m_Board.UpdateKingCase(m_CurrentPlayerTurn.PlayerPiece);
                 changeTurn();
             }
+            //סיכום של השחק והניקוד
         }
         private void changeTurn()
         {
