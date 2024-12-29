@@ -4,22 +4,22 @@ namespace DamkaProject
 {
     class Point
     {
-        private int x;
-        private int y;
-        public Point(int x, int y)
+        private int m_X;
+        private int m_Y;
+        public Point(int i_X, int i_Y)
         {
-            this.x = x;
-            this.y = y;
+            m_X = i_X;
+            m_Y = i_Y;
         }
         public int X
         {
-            get { return x; }
-            set { x = value; }
+            get { return m_X; }
+            set { m_X = value; }
         }
         public int Y
         {
-            get { return y; }
-            set { y = value; }
+            get { return m_Y; }
+            set { m_Y = value; }
         }
     }
 }
