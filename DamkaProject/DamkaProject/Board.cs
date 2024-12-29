@@ -5,7 +5,7 @@ namespace DamkaProject
 {
     class Board
     {
-        private int m_Size; //comment
+        private int m_Size;
         private Piece[,] m_GameBoard;
 
         public Board(int i_Size)
