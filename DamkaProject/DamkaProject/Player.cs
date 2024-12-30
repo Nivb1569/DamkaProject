@@ -387,10 +387,9 @@ namespace DamkaProject
             o_From = null;
             o_To = null;
 
-            //go over all the computer positions and colloct all the possibles positions and select one
             List<Point[]> possiblePositions = new List<Point[]>();
             possiblePositions = createPossiblePositionsList(i_Board);
-            //choseNextMove(possoblePositions,out o_From, out o_To);
+            choseNextMove(possiblePositions, out o_From, out o_To);
         }
 
         private List<Point[]> createPossiblePositionsList(Board i_Board)
@@ -403,27 +402,21 @@ namespace DamkaProject
                 for (int j = 0; j < i_Board.Size; j++)
                 {
                     Point currentFrom = new Point(i, j);
-                    if (i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.O)
+                    if (i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.O || i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.U)
                     {
-                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.e_PieceType.O);
-                    }
-                    else if (i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.U)
-                    {
-                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, Piece.e_PieceType.U);
+                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, i_Board.GameBoard[i,j].PieceType);
                     }
                 }
             }
 
             return possiblePositions;
         }
-
         private void checkAndAddPossiblePositions(Board i_Board, Point i_CurrentFrom, List<Point[]> io_PossiblePositions, Piece.e_PieceType i_PieceType)
         {
-            if (i_PieceType == Piece.e_PieceType.O)
-            {
-                //check with niv if this is the actual x and y - checked!
-                Point currentTo = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y + 1);
+            Point currentTo = new Point(i_CurrentFrom.X, i_CurrentFrom.Y);
 
+                currentTo.X -= 1;
+                currentTo.Y += 1;
                 checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
                 currentTo.X += 1;
                 currentTo.Y += 1;
@@ -435,12 +428,22 @@ namespace DamkaProject
                 currentTo.Y += 2;
                 checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
 
-            }
-            else //this is U
+            if (i_PieceType == Piece.e_PieceType.U)
             {
-
-
+                currentTo.X -= 1;
+                currentTo.Y -= 1;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+                currentTo.X += 1;
+                currentTo.Y -= 1;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+                currentTo.X -= 2;
+                currentTo.Y -= 2;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
+                currentTo.X += 2;
+                currentTo.Y -= 2;
+                checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo, io_PossiblePositions);
             }
+
         }
         private void checkLegalAndAddToList(Board i_Board, Point i_CurrentFrom, Point i_CurrentTo, List<Point[]> io_PossiblePositions)
         {
@@ -449,6 +452,12 @@ namespace DamkaProject
                 io_PossiblePositions.Add(new Point[] { i_CurrentFrom, i_CurrentTo });
             }
         }
+        private void choseNextMove(List<Point[]> possoblePositions, out Point o_From, out Point o_To)
+        {
+            o_From = null;
+            o_To = null;
+        }
+
         public bool NoMovesLeft(Board i_Board)
         {
             bool isTie = true;

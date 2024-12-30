@@ -4,14 +4,14 @@ namespace DamkaProject
 {
     class Piece
     {
-        public enum e_DirectionType //change name to e_DirectionType
+        public enum e_DirectionType 
         {
             Empty,
             Up,
             Down,
             Both
         }
-        public enum e_PieceType //change name to e_PieceType
+        public enum e_PieceType 
         {
             Empty,
             X,
