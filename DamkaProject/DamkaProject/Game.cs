@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DamkaProject
 {
@@ -67,15 +68,20 @@ namespace DamkaProject
         }
         private void startToPlay()
         {
-            bool isJumpMove, isQuitInput;
-            while (true) // WantToPlay - another game varabile.
+            bool isJumpMove, isQuitInput,anotherJump=false,samePlayer=false;
+            Point o_FromPrev = null;
+            Point o_ToPrev = null;
+            List<Point[]> o_NextJumpMove = null;
+            while (true) // WantToPlay another game varabile.
             {
                 // Inits.
-                while (!GameOver) // !GameOver
+                while (!GameOver) 
                 {
                     m_Board.PrintBoard();
-                    Console.WriteLine(m_CurrentPlayerTurn.PlayerName + "'s turn:");
-                    m_CurrentPlayerTurn.MakeMove(m_Board, out isJumpMove, out isQuitInput);
+                    printPreviousMove(m_CurrentPlayerTurn, o_FromPrev, o_ToPrev, samePlayer);
+                    printCurrentTurn(m_CurrentPlayerTurn);
+                    m_CurrentPlayerTurn.MakeMove(m_Board, out isJumpMove, out isQuitInput, out o_FromPrev, out o_ToPrev, anotherJump, o_NextJumpMove);
+                    anotherJump = false;
                     if (isQuitInput)
                     {
                         updateWinnerPlayer();
@@ -84,14 +90,21 @@ namespace DamkaProject
                     if (isJumpMove)
                     {
                         updateNumberOfPices();
-                    }
+                        anotherJump = m_CurrentPlayerTurn.checkIfCanJumpAgain(m_Board, o_ToPrev, out o_NextJumpMove);
+                        if(anotherJump)
+                            samePlayer = true;
+                    }                    
                     m_Board.UpdateKingCase(m_CurrentPlayerTurn.PlayerPiece);
+                    if (!anotherJump) 
+                    {
+                         changeTurn();
+                         samePlayer = false;
+                    }
                     checkGameStatus();
-                    changeTurn();
                 }
                 // תרצה לשחק עוד סיבוב?
-                //סיכום של המשחק והניקוד
             }
+                //סיכום של המשחק והניקוד
         }
         private void changeTurn()
         {
@@ -156,12 +169,12 @@ namespace DamkaProject
                 GameOver = true;
                 m_Winner = m_FirstPlayer.NumberOfPieces == 0? m_SecondPlayer:m_FirstPlayer;
             }
-            else if (m_FirstPlayer.NoMovesLeft(m_Board) && m_SecondPlayer == m_CurrentPlayerTurn)
+            else if (m_FirstPlayer.NoMovesLeft(m_Board) && m_FirstPlayer == m_CurrentPlayerTurn)
             {
                 GameOver = true;
                 m_Winner = m_SecondPlayer;
             }
-            else if (m_SecondPlayer.NoMovesLeft(m_Board) && m_FirstPlayer == m_CurrentPlayerTurn)
+            else if (m_SecondPlayer.NoMovesLeft(m_Board) && m_SecondPlayer == m_CurrentPlayerTurn)
             {
                 GameOver = true;
                 m_Winner = m_FirstPlayer;
@@ -171,5 +184,46 @@ namespace DamkaProject
                 GameOver = true;
             }
         }
+        private void printPreviousMove(Player i_currentPlayer, Point i_From, Point i_To, bool samePlayer)
+        {
+            Player previousPlayer = null;
+            if (samePlayer)
+            {
+                previousPlayer = i_currentPlayer;
+            }
+            else
+            {
+                if (i_currentPlayer == m_FirstPlayer)
+                {
+                    previousPlayer = m_SecondPlayer;
+                }
+                else
+                {
+                    previousPlayer = m_FirstPlayer;
+                }
+                
+            }
+            if(i_From!=null && i_To!=null)
+            {
+                string previuosMove = Point.convertPointsToString(i_From, i_To);
+
+                Console.WriteLine(previousPlayer.PlayerName + "'s move was (" + previousPlayer.PlayerPiece + "): " + previuosMove);
+            }
+
+
+        }
+
+        private void printCurrentTurn(Player i_currentPlayer)
+        {
+            Console.Write(m_CurrentPlayerTurn.PlayerName + "'s turn (" + m_CurrentPlayerTurn.PlayerPiece + ") : ");
+            if(m_CurrentPlayerTurn.PlayerName == "Computer")
+            {
+                Console.Write("(press 'enter' to see it's move)");
+                Console.ReadLine();
+            }
+
+        }
+
+
     }
 }

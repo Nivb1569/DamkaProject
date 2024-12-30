@@ -11,6 +11,8 @@
 *.sln.docstates
 *.cache
 *.vs/
+bin/
+obj/
 
 
 
