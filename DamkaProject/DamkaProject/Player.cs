@@ -546,9 +546,9 @@ namespace DamkaProject
         public bool NoMovesLeft(Board i_Board)
         {
             bool playerCantPlay = true;
-            for (int i = 0; i < i_Board.Size - 1; i++)
+            for (int i = 0; i < i_Board.Size; i++)
             {
-                for (int j = 0; j < i_Board.Size - 1; j++)
+                for (int j = 0; j < i_Board.Size; j++)
                 {
                     if ((isPlayerPiece(i_Board.GameBoard[i, j].PieceType)) && !isStuckPiece(new Point(i, j), i_Board))
                     {
@@ -708,7 +708,10 @@ namespace DamkaProject
         {
             m_Points += i_Points;
         }
-
+        public int Points
+        {
+            get { return m_Points; }
+        }
     }
 
 }
