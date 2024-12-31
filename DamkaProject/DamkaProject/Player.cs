@@ -677,6 +677,10 @@ namespace DamkaProject
 
             return result;
         }
+        public void addPoints(int i_Points)
+        {
+            m_Points += i_Points;
+        }
 
     }
 

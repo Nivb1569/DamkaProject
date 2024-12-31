@@ -68,11 +68,11 @@ namespace DamkaProject
         }
         private void startToPlay()
         {
-            bool isJumpMove, isQuitInput,anotherJump=false,samePlayer=false;
+            bool isJumpMove, isQuitInput, anotherJump = false, samePlayer = false, wantToPlay = true;
             Point o_FromPrev = null;
             Point o_ToPrev = null;
             List<Point[]> o_NextJumpMove = null;
-            while (true) // WantToPlay another game varabile.
+            while (wantToPlay) // WantToPlay another game varabile.
             {
                 // Inits.
                 while (!GameOver) 
@@ -102,9 +102,28 @@ namespace DamkaProject
                     }
                     checkGameStatus();
                 }
+                updatePlayerPoints();
+                printSummaryOfTheGame();
+                //doYouWantToPlayAnotherRound();
+
+
                 // תרצה לשחק עוד סיבוב?
             }
-                //סיכום של המשחק והניקוד
+            //gameIsOverMessage();
+        }
+        private void updatePlayerPoints()
+        {
+            if (m_Winner != null)
+            {
+                if(m_Winner == m_FirstPlayer)
+                {
+                    m_FirstPlayer.addPoints(m_FirstPlayer.NumberOfPieces - m_SecondPlayer.NumberOfPieces);
+                }
+                else
+                {
+                    m_SecondPlayer.addPoints(m_SecondPlayer.NumberOfPieces - m_FirstPlayer.NumberOfPieces);
+                }
+            }
         }
         private void changeTurn()
         {
@@ -116,6 +135,10 @@ namespace DamkaProject
             {
                 m_CurrentPlayerTurn = m_FirstPlayer;
             }
+        }
+        private void printSummaryOfTheGame()
+        {
+
         }
         private void updateNumberOfPices()
         {
