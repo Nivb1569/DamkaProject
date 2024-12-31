@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 
 
 namespace DamkaProject
@@ -81,10 +80,10 @@ namespace DamkaProject
 
             if (m_IsComputer)
             {
-                if(anotherJump)
+                if (anotherJump)
                 {
-                    o_From = nextJumpMove[0][0]; 
-                    o_To = nextJumpMove[0][1]; 
+                    o_From = nextJumpMove[0][0];
+                    o_To = nextJumpMove[0][1];
                 }
                 else
                 {
@@ -168,9 +167,9 @@ namespace DamkaProject
 
             if (nextJump.Count == 1)
             {
-                while(!isValid)
+                while (!isValid)
                 {
-                    if(choice.Equals(move))
+                    if (choice.Equals(move))
                     {
                         o_From = from1;
                         o_To = to1;
@@ -188,15 +187,15 @@ namespace DamkaProject
                 Point from2 = nextJump[1][0];
                 Point to2 = nextJump[1][1];
                 String move1 = Point.convertPointsToString(from2, to2);
-                while(!isValid)
+                while (!isValid)
                 {
-                    if(choice.Equals(move))
+                    if (choice.Equals(move))
                     {
                         isValid = true;
                         o_From = from1;
                         o_To = to1;
                     }
-                    else if(choice.Equals(move1))
+                    else if (choice.Equals(move1))
                     {
                         isValid = true;
                         o_From = from2;
@@ -457,10 +456,10 @@ namespace DamkaProject
         {
             o_From = null;
             o_To = null;
-            
+
             List<Point[]> possiblePositions = new List<Point[]>();
             possiblePositions = createPossiblePositionsList(i_Board);
-            choseNextMove(possiblePositions, out o_From, out o_To,i_Board);
+            choseNextMove(possiblePositions, out o_From, out o_To, i_Board);
         }
 
         private List<Point[]> createPossiblePositionsList(Board i_Board)
@@ -475,7 +474,7 @@ namespace DamkaProject
                     Point currentFrom = new Point(i, j);
                     if (i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.O || i_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.U)
                     {
-                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, i_Board.GameBoard[i,j].PieceType);
+                        checkAndAddPossiblePositions(i_Board, currentFrom, possiblePositions, i_Board.GameBoard[i, j].PieceType);
                     }
                 }
             }
@@ -495,7 +494,7 @@ namespace DamkaProject
 
             if (i_PieceType == Piece.e_PieceType.U)
             {
-                Point currentTo4 = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y -1);
+                Point currentTo4 = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y - 1);
                 checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo4, io_PossiblePositions);
                 Point currentTo5 = new Point(i_CurrentFrom.X - 1, i_CurrentFrom.Y + 1);
                 checkLegalAndAddToList(i_Board, i_CurrentFrom, currentTo5, io_PossiblePositions);
@@ -514,29 +513,29 @@ namespace DamkaProject
                 {
                     io_PossiblePositions.Add(new Point[] { i_CurrentFrom, i_CurrentTo });
                 }
-            } 
+            }
         }
         private void choseNextMove(List<Point[]> possoblePositions, out Point o_From, out Point o_To, Board i_Board)
         {
             o_From = null;
             o_To = null;
-            
+
             int lengthOfList = possoblePositions.Count;
             if (lengthOfList != 0)
             {
                 //if jump choose it!
                 foreach (Point[] points in possoblePositions)
                 {
-                    if (isJump(points[0], points[1],i_Board))
+                    if (isJump(points[0], points[1], i_Board))
                     {
                         o_From = points[0];
                         o_To = points[1];
-                        
+
                         break;
                     }
                 }
 
-                if(o_From == null && o_To == null)
+                if (o_From == null && o_To == null)
                 {
                     int randomIndex = new Random().Next(lengthOfList);
                     o_From = possoblePositions[randomIndex][0];
@@ -579,9 +578,9 @@ namespace DamkaProject
                 isMoveDiagonallyWithValidation(i_From, new Point(i_From.X - 1, i_From.Y + 1), i_Board) ||
                 isMoveDiagonallyWithValidation(i_From, new Point(i_From.X + 1, i_From.Y - 1), i_Board) ||
                 isMoveDiagonallyWithValidation(i_From, new Point(i_From.X + 1, i_From.Y + 1), i_Board) ||
-                isJumpWithValidation(i_From, new Point(i_From.X - 2, i_From.Y - 2), i_Board)           ||
-                isJumpWithValidation(i_From, new Point(i_From.X - 2, i_From.Y + 2), i_Board)           ||
-                isJumpWithValidation(i_From, new Point(i_From.X + 2, i_From.Y - 2), i_Board)           ||
+                isJumpWithValidation(i_From, new Point(i_From.X - 2, i_From.Y - 2), i_Board) ||
+                isJumpWithValidation(i_From, new Point(i_From.X - 2, i_From.Y + 2), i_Board) ||
+                isJumpWithValidation(i_From, new Point(i_From.X + 2, i_From.Y - 2), i_Board) ||
                 isJumpWithValidation(i_From, new Point(i_From.X + 2, i_From.Y + 2), i_Board))
             {
                 isStuckPiece = false;
@@ -613,65 +612,93 @@ namespace DamkaProject
 
             return result;
         }
-
-        public bool checkIfCanJumpAgain(Board i_Board, Point i_jumpFrom, out List<Point[]> io_nextJumpMove )
+        public bool checkIfCanJumpAgain(Board i_Board, Point i_jumpFrom, out List<Point[]> io_nextJumpMove)
         {
             bool result = false;
             io_nextJumpMove = new List<Point[]>(2);
-            if(m_PlayerPiece == Piece.e_PieceType.X)
+            if (m_PlayerPiece == Piece.e_PieceType.X)
             {
-                if (i_Board.GameBoard[i_jumpFrom.X, i_jumpFrom.Y].PieceType == Piece.e_PieceType.X)
+
+                if (isLegalPoint(new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2), i_Board))
                 {
-                    if(isLegalPoint(new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2),i_Board))
+                    if (isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2), i_Board))
                     {
-                        if (isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2), i_Board))
-                        {
-                            result = true;
-                            io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2) });
-                        }
-                    }
-
-                    if(isLegalPoint(new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2), i_Board))
-                    {
-                        if(isJump(i_jumpFrom,new Point(i_jumpFrom.X-2,i_jumpFrom.Y+2),i_Board))
-                        {
-                            result = true;
-                            io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2) });
-                        }
-
+                        result = true;
+                        io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2) });
                     }
                 }
-                else //K
+
+                if (isLegalPoint(new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2), i_Board))
                 {
+                    if (isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2), i_Board))
+                    {
+                        result = true;
+                        io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2) });
+                    }
 
                 }
 
-            }
-            else // O
-            {
-                if (i_Board.GameBoard[i_jumpFrom.X, i_jumpFrom.Y].PieceType == Piece.e_PieceType.O)
+                if (i_Board.GameBoard[i_jumpFrom.X, i_jumpFrom.Y].PieceType == Piece.e_PieceType.K)
                 {
-                    if(isLegalPoint(new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2), i_Board))
+                    if (isLegalPoint(new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2), i_Board))
                     {
-                        if(isJump(i_jumpFrom, new Point(i_jumpFrom.X +2, i_jumpFrom.Y-2),i_Board))
+                        if (isJump(i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2), i_Board))
                         {
                             result = true;
                             io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2) });
                         }
                     }
-                    if(isLegalPoint(new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2), i_Board))
+
+                    if (isLegalPoint(new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2), i_Board))
                     {
-                        if(isJump(i_jumpFrom,new Point (i_jumpFrom.X+2, i_jumpFrom.Y+2),i_Board))
+                        if (isJump(i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2), i_Board))
                         {
                             result = true;
                             io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2) });
                         }
-
                     }
                 }
-                else //U
-                {
 
+            }
+            else //player is O
+            {
+
+                if (isLegalPoint(new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2), i_Board))
+                {
+                    if (isJump(i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2), i_Board))
+                    {
+                        result = true;
+                        io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y - 2) });
+                    }
+                }
+                if (isLegalPoint(new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2), i_Board))
+                {
+                    if (isJump(i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2), i_Board))
+                    {
+                        result = true;
+                        io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X + 2, i_jumpFrom.Y + 2) });
+                    }
+
+                }
+
+                if (i_Board.GameBoard[i_jumpFrom.X, i_jumpFrom.Y].PieceType == Piece.e_PieceType.U)
+                {
+                    if(isLegalPoint(new Point(i_jumpFrom.X -2, i_jumpFrom.Y -2),i_Board))
+                    {
+                        if(isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2),i_Board))
+                        {
+                            result = true;
+                            io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2) });
+                        }
+                    }
+                    if (isLegalPoint(new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2), i_Board))
+                    {
+                        if (isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2), i_Board))
+                        {
+                            result = true;
+                            io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y + 2) });
+                        }
+                    }
                 }
             }
 
