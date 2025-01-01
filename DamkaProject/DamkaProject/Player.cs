@@ -125,7 +125,7 @@ namespace Ex02
             o_IsQuitInput = false;
             while (!isValid)
             {
-                choice = Console.ReadLine();
+               choice = Console.ReadLine();
                if (choice == "Q")
                 {
                     o_IsQuitInput = true;
@@ -136,12 +136,12 @@ namespace Ex02
                     o_IsQuitInput = false;
                     if (anotherJump)
                     {
-                        completeTheJump(choice, out o_From, out o_To, nextJump);
+                        completeTheJump(choice, out o_From, out o_To, nextJump, out o_IsQuitInput);
                         isValid = true;
                     }
                     else if (mustJump(out List<Point[]> optionalJumps, i_Board))
                     {
-                        getChoiceOfJump(choice,out o_From, out o_To, optionalJumps);
+                        getChoiceOfJump(choice,out o_From, out o_To, optionalJumps, out o_IsQuitInput);
                         isValid = true;
                     }
                     else if (!isValidChoice(choice, i_Board))
@@ -158,14 +158,20 @@ namespace Ex02
 
         }
 
-        private void getChoiceOfJump(String i_choice, out Point o_From, out Point o_To, List<Point[]> i_optionalJumps)
+        private void getChoiceOfJump(String i_choice, out Point o_From, out Point o_To, List<Point[]> i_optionalJumps, out bool o_IsQuitInput)
         {
             o_From = null;
             o_To = null;
+            o_IsQuitInput = false;
             bool isValid = false;
 
             while (!isValid)
             {
+                if (i_choice == "Q")
+                {
+                    o_IsQuitInput = true;
+                    return;
+                }
                 for (int i = 0; i < i_optionalJumps.Count; i++)
                 {
                     String optionalJumpString = Point.convertPointsToString(i_optionalJumps[i][0], i_optionalJumps[i][1]);
@@ -193,11 +199,14 @@ namespace Ex02
             {
                 for (int j = 0; j < i_Board.Size; j++)
                 {
-                    Point jumpFrom = new Point(i, j);
-                    checkIfCanJumpAndMakeList(i_Board, jumpFrom, out List<Point[]> currentOptionalList);
-                    if (currentOptionalList.Count > 0)
+                    if (isPlayerPiece(i_Board.GameBoard[i,j].PieceType))
                     {
-                        o_OptionalJumpsRes.AddRange(currentOptionalList);
+                        Point jumpFrom = new Point(i, j);
+                        checkIfCanJumpAndMakeList(i_Board, jumpFrom, out List<Point[]> currentOptionalList);
+                        if (currentOptionalList.Count > 0)
+                        {
+                            o_OptionalJumpsRes.AddRange(currentOptionalList);
+                        }
                     }
                 }
             }
@@ -205,10 +214,11 @@ namespace Ex02
             return (o_OptionalJumpsRes.Count > 0);
         }
 
-        private void completeTheJump(String choice, out Point o_From, out Point o_To, List<Point[]> nextJump)
+        private void completeTheJump(String i_choice, out Point o_From, out Point o_To, List<Point[]> nextJump, out bool o_IsQuitInput)
         {
             o_From = null;
             o_To = null;
+            o_IsQuitInput = false;
             Point from1 = nextJump[0][0];
             Point to1 = nextJump[0][1];
             bool isValid = false;
@@ -218,7 +228,12 @@ namespace Ex02
             {
                 while (!isValid)
                 {
-                    if (choice.Equals(move))
+                    if (i_choice == "Q")
+                    {
+                        o_IsQuitInput = true;
+                        return;
+                    }
+                    if (i_choice.Equals(move))
                     {
                         o_From = from1;
                         o_To = to1;
@@ -227,7 +242,7 @@ namespace Ex02
                     else
                     {
                         Console.WriteLine(string.Format("Invalid Step, please jump -> {0}", move));
-                        choice = Console.ReadLine();
+                        i_choice = Console.ReadLine();
                     }
                 }
             }
@@ -238,13 +253,13 @@ namespace Ex02
                 String move2 = Point.convertPointsToString(from2, to2);
                 while (!isValid)
                 {
-                    if (choice.Equals(move))
+                    if (i_choice.Equals(move))
                     {
                         isValid = true;
                         o_From = from1;
                         o_To = to1;
                     }
-                    else if (choice.Equals(move2))
+                    else if (i_choice.Equals(move2))
                     {
                         isValid = true;
                         o_From = from2;
@@ -253,7 +268,7 @@ namespace Ex02
                     else
                     {
                         Console.WriteLine(string.Format("Invalid Step, please jump -> {0} or -> {1}", move, move2));
-                        choice = Console.ReadLine();
+                        i_choice = Console.ReadLine();
                     }
                 }
             }
@@ -267,19 +282,19 @@ namespace Ex02
                 String move3 = Point.convertPointsToString(from3, to3);
                 while (!isValid)
                 {
-                    if (choice.Equals(move))
+                    if (i_choice.Equals(move))
                     {
                         isValid = true;
                         o_From = from1;
                         o_To = to1;
                     }
-                    else if (choice.Equals(move2))
+                    else if (i_choice.Equals(move2))
                     {
                         isValid = true;
                         o_From = from2;
                         o_To = to2;
                     }
-                    else if (choice.Equals(move3))
+                    else if (i_choice.Equals(move3))
                     {
                         isValid = true;
                         o_From = from3;
@@ -288,7 +303,7 @@ namespace Ex02
                     else
                     {
                         Console.WriteLine(string.Format("Invalid Step, please jump -> {0} or -> {1} or -> {2}", move, move2, move3));
-                        choice = Console.ReadLine();
+                        i_choice = Console.ReadLine();
                     }
                 }
             }
