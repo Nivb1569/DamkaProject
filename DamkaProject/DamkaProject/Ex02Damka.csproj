@@ -44,8 +44,9 @@
     <Compile Include="Piece.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Ex02.ConsoleUtils">
-      <HintPath>..\..\..\..\..\..\Downloads\DN_MTA_2025A_Ex02\Ex02.ConsoleUtils.dll</HintPath>
+    <Reference Include="Ex02.ConsoleUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Ex02.ConsoleUtils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
