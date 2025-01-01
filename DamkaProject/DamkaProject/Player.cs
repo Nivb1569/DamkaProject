@@ -137,14 +137,14 @@ namespace Ex02
                 else
                 {
                     o_IsQuitInput = false;
-                    if (mustJump(out List<Point[]> optionalJumps, i_Board))
-                    {
-                        getChoiceOfJump(choice,out o_From, out o_To, optionalJumps);
-                        isValid = true;
-                    }
-                    else if (anotherJump)
+                    if (anotherJump)
                     {
                         completeTheJump(choice, out o_From, out o_To, nextJump);
+                        isValid = true;
+                    }
+                    else if (mustJump(out List<Point[]> optionalJumps, i_Board))
+                    {
+                        getChoiceOfJump(choice,out o_From, out o_To, optionalJumps);
                         isValid = true;
                     }
                     else if (!isValidChoice(choice, i_Board))

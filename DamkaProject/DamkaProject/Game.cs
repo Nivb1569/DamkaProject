@@ -112,6 +112,7 @@ namespace Ex02
                 printSummaryOfTheGame();
                 wantToPlay = doYouWantToPlayAnotherRound();
             }
+            Ex02.ConsoleUtils.Screen.Clear();
             gameIsOverMessage();
         }
         private void updatePlayerPoints()
@@ -283,6 +284,7 @@ namespace Ex02
 
             if (GameOver)
             {
+                Ex02.ConsoleUtils.Screen.Clear();
                 m_Board.PrintBoard();
             }
         }
