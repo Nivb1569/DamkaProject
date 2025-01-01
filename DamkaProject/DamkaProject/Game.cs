@@ -85,7 +85,7 @@ namespace Ex02
                     Ex02.ConsoleUtils.Screen.Clear();
                     m_Board.PrintBoard();
                     printPreviousMove(m_CurrentPlayerTurn, o_FromPrev, o_ToPrev, samePlayer);
-                    printCurrentTurn(m_CurrentPlayerTurn);
+                    printCurrentTurn();
                     m_CurrentPlayerTurn.MakeMove(m_Board, out isJumpMove, out isQuitInput, out o_FromPrev, out o_ToPrev, anotherJump, o_NextJumpMove);
                     anotherJump = false;
                     if (isQuitInput)
@@ -182,13 +182,12 @@ namespace Ex02
         {
             bool isValid = false;
             bool wantToPlay = false;
-            int choice = -1;
             while (!isValid)
             {
                 Console.WriteLine("For playing another round enter 0.");
                 Console.WriteLine("For finish the game and exit enter 1.");
                 String input = Console.ReadLine();
-                if (int.TryParse(input, out choice))
+                if (int.TryParse(input, out int choice))
                 {
                     if (!isValidChoice(choice))
                     {
@@ -317,7 +316,7 @@ namespace Ex02
 
         }
 
-        private void printCurrentTurn(Player i_currentPlayer)
+        private void printCurrentTurn()
         {
             Console.Write(m_CurrentPlayerTurn.PlayerName + "'s turn (" + m_CurrentPlayerTurn.PlayerPiece + ") : ");
             if(m_CurrentPlayerTurn.PlayerName == "Computer")

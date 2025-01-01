@@ -75,9 +75,6 @@ namespace Ex02
         public void MakeMove(Board i_Board, out bool o_IsJumpMove, out bool o_IsQuitInput,
             out Point o_From, out Point o_To, bool anotherJump, List<Point[]> nextJumpMove)
         {
-            o_From = null;
-            o_To = null;
-
             if (m_IsComputer)
             {
                 if (anotherJump)
@@ -197,8 +194,7 @@ namespace Ex02
                 for (int j = 0; j < i_Board.Size; j++)
                 {
                     Point jumpFrom = new Point(i, j);
-                    List<Point[]> currentOptionalList = new List<Point[]>();
-                    checkIfCanJumpAndMakeList(i_Board, jumpFrom, out currentOptionalList);
+                    checkIfCanJumpAndMakeList(i_Board, jumpFrom, out List<Point[]> currentOptionalList);
                     if (currentOptionalList.Count > 0)
                     {
                         o_OptionalJumpsRes.AddRange(currentOptionalList);
@@ -541,11 +537,7 @@ namespace Ex02
 
         private void generateMove(out Point o_From, out Point o_To, Board i_Board)
         {
-            o_From = null;
-            o_To = null;
-
-            List<Point[]> possiblePositions = new List<Point[]>();
-            possiblePositions = createPossiblePositionsList(i_Board);
+            List<Point[]> possiblePositions = createPossiblePositionsList(i_Board);
             choseNextMove(possiblePositions, out o_From, out o_To, i_Board);
         }
 

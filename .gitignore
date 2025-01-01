@@ -414,3 +414,4 @@ FodyWeavers.xsd
 /DamkaProject/DamkaProject/obj/Debug/DamkaProject.csproj.FileListAbsolute.txt
 /DamkaProject/DamkaProject/obj/Debug/DamkaProject.csproj.AssemblyReference.cache
 
+*.orig
