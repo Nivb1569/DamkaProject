@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ex02;
 
 namespace DamkaProject
 {
@@ -82,6 +83,7 @@ namespace DamkaProject
                 init();
                 while (!GameOver) 
                 {
+                    Ex02.ConsoleUtils.Screen.Clear();
                     m_Board.PrintBoard();
                     printPreviousMove(m_CurrentPlayerTurn, o_FromPrev, o_ToPrev, samePlayer);
                     printCurrentTurn(m_CurrentPlayerTurn);
