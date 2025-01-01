@@ -129,7 +129,7 @@ namespace DamkaProject
             while (!isValid)
             {
                 choice = Console.ReadLine();
-                if (choice == "Q")
+               if (choice == "Q")
                 {
                     o_IsQuitInput = true;
                     return;
@@ -137,7 +137,12 @@ namespace DamkaProject
                 else
                 {
                     o_IsQuitInput = false;
-                    if (anotherJump)
+                    if (mustJump(out List<Point[]> optionalJumps, i_Board))
+                    {
+                        getChoiceOfJump(choice,out o_From, out o_To, optionalJumps);
+                        isValid = true;
+                    }
+                    else if (anotherJump)
                     {
                         completeTheJump(choice, out o_From, out o_To, nextJump);
                         isValid = true;
@@ -154,6 +159,54 @@ namespace DamkaProject
                 }
             }
 
+        }
+
+        private void getChoiceOfJump(String i_choice, out Point o_From, out Point o_To, List<Point[]> i_optionalJumps)
+        {
+            o_From = null;
+            o_To = null;
+            bool isValid = false;
+
+            while (!isValid)
+            {
+                for (int i = 0; i < i_optionalJumps.Count; i++)
+                {
+                    String optionalJumpString = Point.convertPointsToString(i_optionalJumps[i][0], i_optionalJumps[i][1]);
+                    if (i_choice.Equals(optionalJumpString))
+                    {
+                        o_From = i_optionalJumps[i][0];
+                        o_To = i_optionalJumps[i][1];
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (!isValid)
+                {
+                    Console.WriteLine("You must jump, please try again!");
+                    i_choice = Console.ReadLine();
+                }
+            }
+        }
+
+        private bool mustJump(out List<Point[]> o_OptionalJumpsRes, Board i_Board)
+        {
+            o_OptionalJumpsRes = new List<Point[]>();
+
+            for (int i = 0; i < i_Board.Size; i++)
+            {
+                for (int j = 0; j < i_Board.Size; j++)
+                {
+                    Point jumpFrom = new Point(i, j);
+                    List<Point[]> currentOptionalList = new List<Point[]>();
+                    checkIfCanJumpAndMakeList(i_Board, jumpFrom, out currentOptionalList);
+                    if (currentOptionalList.Count > 0)
+                    {
+                        o_OptionalJumpsRes.AddRange(currentOptionalList);
+                    }
+                }
+            }
+
+            return (o_OptionalJumpsRes.Count > 0);
         }
 
         private void completeTheJump(String choice, out Point o_From, out Point o_To, List<Point[]> nextJump)
@@ -182,11 +235,11 @@ namespace DamkaProject
                     }
                 }
             }
-            else //count = 2
+            else if (nextJump.Count == 2)
             {
                 Point from2 = nextJump[1][0];
                 Point to2 = nextJump[1][1];
-                String move1 = Point.convertPointsToString(from2, to2);
+                String move2 = Point.convertPointsToString(from2, to2);
                 while (!isValid)
                 {
                     if (choice.Equals(move))
@@ -195,7 +248,7 @@ namespace DamkaProject
                         o_From = from1;
                         o_To = to1;
                     }
-                    else if (choice.Equals(move1))
+                    else if (choice.Equals(move2))
                     {
                         isValid = true;
                         o_From = from2;
@@ -203,11 +256,45 @@ namespace DamkaProject
                     }
                     else
                     {
-                        Console.WriteLine(string.Format("Invalid Step, please jump -> {0} or -> {1}", move, move1));
+                        Console.WriteLine(string.Format("Invalid Step, please jump -> {0} or -> {1}", move, move2));
                         choice = Console.ReadLine();
                     }
                 }
-
+            }
+            else // count=3
+            {
+                Point from2 = nextJump[1][0];
+                Point to2 = nextJump[1][1];
+                String move2 = Point.convertPointsToString(from2, to2);
+                Point from3 = nextJump[2][0];
+                Point to3 = nextJump[2][1];
+                String move3 = Point.convertPointsToString(from3, to3);
+                while (!isValid)
+                {
+                    if (choice.Equals(move))
+                    {
+                        isValid = true;
+                        o_From = from1;
+                        o_To = to1;
+                    }
+                    else if (choice.Equals(move2))
+                    {
+                        isValid = true;
+                        o_From = from2;
+                        o_To = to2;
+                    }
+                    else if (choice.Equals(move3))
+                    {
+                        isValid = true;
+                        o_From = from3;
+                        o_To = to3;
+                    }
+                    else
+                    {
+                        Console.WriteLine(string.Format("Invalid Step, please jump -> {0} or -> {1} or -> {2}", move, move2, move3));
+                        choice = Console.ReadLine();
+                    }
+                }
             }
         }
         private bool isValidChoice(String i_Choice, Board i_Board)
@@ -515,16 +602,16 @@ namespace DamkaProject
                 }
             }
         }
-        private void choseNextMove(List<Point[]> possoblePositions, out Point o_From, out Point o_To, Board i_Board)
+        private void choseNextMove(List<Point[]> i_possoblePositions, out Point o_From, out Point o_To, Board i_Board)
         {
             o_From = null;
             o_To = null;
 
-            int lengthOfList = possoblePositions.Count;
+            int lengthOfList = i_possoblePositions.Count;
             if (lengthOfList != 0)
             {
                 //if jump choose it!
-                foreach (Point[] points in possoblePositions)
+                foreach (Point[] points in i_possoblePositions)
                 {
                     if (isJump(points[0], points[1], i_Board))
                     {
@@ -538,8 +625,8 @@ namespace DamkaProject
                 if (o_From == null && o_To == null)
                 {
                     int randomIndex = new Random().Next(lengthOfList);
-                    o_From = possoblePositions[randomIndex][0];
-                    o_To = possoblePositions[randomIndex][1];
+                    o_From = i_possoblePositions[randomIndex][0];
+                    o_To = i_possoblePositions[randomIndex][1];
                 }
             }
         }
@@ -612,10 +699,10 @@ namespace DamkaProject
 
             return result;
         }
-        public bool checkIfCanJumpAgain(Board i_Board, Point i_jumpFrom, out List<Point[]> io_nextJumpMove)
+        public bool checkIfCanJumpAndMakeList(Board i_Board, Point i_jumpFrom, out List<Point[]> io_nextJumpMove)
         {
             bool result = false;
-            io_nextJumpMove = new List<Point[]>(2);
+            io_nextJumpMove = new List<Point[]>();
             if (m_PlayerPiece == Piece.e_PieceType.X)
             {
 
@@ -683,9 +770,9 @@ namespace DamkaProject
 
                 if (i_Board.GameBoard[i_jumpFrom.X, i_jumpFrom.Y].PieceType == Piece.e_PieceType.U)
                 {
-                    if(isLegalPoint(new Point(i_jumpFrom.X -2, i_jumpFrom.Y -2),i_Board))
+                    if (isLegalPoint(new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2), i_Board))
                     {
-                        if(isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2),i_Board))
+                        if (isJump(i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2), i_Board))
                         {
                             result = true;
                             io_nextJumpMove.Add(new Point[] { i_jumpFrom, new Point(i_jumpFrom.X - 2, i_jumpFrom.Y - 2) });
