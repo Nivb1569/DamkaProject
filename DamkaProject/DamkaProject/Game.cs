@@ -90,7 +90,7 @@ namespace DamkaProject
                     if (isJumpMove)
                     {
                         updateNumberOfPices();
-                        anotherJump = m_CurrentPlayerTurn.checkIfCanJumpAgain(m_Board, o_ToPrev, out o_NextJumpMove);
+                        anotherJump = m_CurrentPlayerTurn.checkIfCanJumpAndMakeList(m_Board, o_ToPrev, out o_NextJumpMove);
                         if(anotherJump)
                             samePlayer = true;
                     }                    
