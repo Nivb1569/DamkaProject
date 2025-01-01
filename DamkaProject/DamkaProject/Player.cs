@@ -7,10 +7,10 @@ namespace Ex02
     class Player
     {
         private String m_PlayerName = null;
-        private Piece.e_PieceType m_PlayerPiece;
+        private readonly Piece.e_PieceType m_PlayerPiece;
         private int m_NumberOfPieces = 0;
         private int m_Points = 0;
-        private bool m_IsComputer;
+        private readonly bool m_IsComputer;
 
         public Player(String i_PlayerName, Piece.e_PieceType i_PlayerPiece, bool i_IsComputer)
         {
@@ -73,14 +73,14 @@ namespace Ex02
             return isValid;
         }
         public void MakeMove(Board i_Board, out bool o_IsJumpMove, out bool o_IsQuitInput,
-            out Point o_From, out Point o_To, bool anotherJump, List<Point[]> nextJumpMove)
+            out Point o_From, out Point o_To, bool i_AnotherJump, List<Point[]> i_NextJumpMove)
         {
             if (m_IsComputer)
             {
-                if (anotherJump)
+                if (i_AnotherJump)
                 {
-                    o_From = nextJumpMove[0][0];
-                    o_To = nextJumpMove[0][1];
+                    o_From = i_NextJumpMove[0][0];
+                    o_To = i_NextJumpMove[0][1];
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace Ex02
             }
             else
             {
-                getMoveChoice(out o_From, out o_To, i_Board, out o_IsQuitInput, anotherJump, nextJumpMove);
+                getMoveChoice(out o_From, out o_To, i_Board, out o_IsQuitInput, i_AnotherJump, i_NextJumpMove);
             }
 
             if (!o_IsQuitInput)
@@ -116,7 +116,7 @@ namespace Ex02
 
             return result;
         }
-        private void getMoveChoice(out Point o_From, out Point o_To, Board i_Board, out bool o_IsQuitInput, bool anotherJump, List<Point[]> nextJump)
+        private void getMoveChoice(out Point o_From, out Point o_To, Board i_Board, out bool o_IsQuitInput, bool anotherJump, List<Point[]> i_NextJump)
         {
             bool isValid = false;
             String choice;
@@ -136,7 +136,7 @@ namespace Ex02
                     o_IsQuitInput = false;
                     if (anotherJump)
                     {
-                        completeTheJump(choice, out o_From, out o_To, nextJump, out o_IsQuitInput);
+                        completeTheJump(choice, out o_From, out o_To, i_NextJump, out o_IsQuitInput);
                         isValid = true;
                     }
                     else if (mustJump(out List<Point[]> optionalJumps, i_Board))
@@ -357,10 +357,10 @@ namespace Ex02
         {
             return i_FirstLetter >= 'A' && i_FirstLetter <= 'A' + i_BoardSize - 1 && i_SecondLetter >= 'a' && i_SecondLetter <= 'a' + i_BoardSize - 1;
         }
-        private void converteLettersToPoint(String[] i_Move, ref Point i_From, ref Point i_To) // needs io_...
+        private void converteLettersToPoint(String[] i_Move, ref Point io_From, ref Point io_To)
         {
-            i_From = new Point((i_Move[0][0] - 'A'), (i_Move[0][1] - 'a'));
-            i_To = new Point((i_Move[1][0] - 'A'), (i_Move[1][1] - 'a'));
+            io_From = new Point((i_Move[0][0] - 'A'), (i_Move[0][1] - 'a'));
+            io_To = new Point((i_Move[1][0] - 'A'), (i_Move[1][1] - 'a'));
         }
         private bool isLegalMove(Point i_From, Point i_To, Board i_Board)
         {
