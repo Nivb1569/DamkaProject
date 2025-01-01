@@ -72,9 +72,14 @@ namespace DamkaProject
             Point o_FromPrev = null;
             Point o_ToPrev = null;
             List<Point[]> o_NextJumpMove = null;
-            while (wantToPlay) // WantToPlay another game varabile.
+            while (wantToPlay) 
             {
-                // Inits.
+                o_FromPrev = null;
+                o_ToPrev = null;
+                o_NextJumpMove = null;
+                anotherJump = false;
+                samePlayer = false;
+                init();
                 while (!GameOver) 
                 {
                     m_Board.PrintBoard();
@@ -104,12 +109,9 @@ namespace DamkaProject
                 }
                 updatePlayerPoints();
                 printSummaryOfTheGame();
-                //doYouWantToPlayAnotherRound();
-
-
-                // תרצה לשחק עוד סיבוב?
+                wantToPlay = doYouWantToPlayAnotherRound();
             }
-            //gameIsOverMessage();
+            gameIsOverMessage();
         }
         private void updatePlayerPoints()
         {
@@ -117,13 +119,38 @@ namespace DamkaProject
             {
                 if(m_Winner == m_FirstPlayer)
                 {
-                    m_FirstPlayer.addPoints(m_FirstPlayer.NumberOfPieces - m_SecondPlayer.NumberOfPieces);
+                    m_FirstPlayer.addPoints(calcPoints(m_FirstPlayer) - calcPoints(m_SecondPlayer));
                 }
                 else
                 {
-                    m_SecondPlayer.addPoints(m_SecondPlayer.NumberOfPieces - m_FirstPlayer.NumberOfPieces);
+                    m_SecondPlayer.addPoints(calcPoints(m_SecondPlayer) - calcPoints(m_FirstPlayer));
                 }
             }
+        }
+        private int calcPoints(Player i_Player)
+        {
+            int counterPoints = 0;
+            for (int i = 0; i < m_Board.Size; i++)
+            {
+                for (int j = 0; j < m_Board.Size; j++)
+                {
+                    if (m_Board.GameBoard[i, j].PieceType == i_Player.PlayerPiece)
+                    {
+                        counterPoints++;
+                    }
+                    else if (m_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.U && i_Player.PlayerPiece == Piece.e_PieceType.O)
+                    {
+                        counterPoints += 4;
+                    }
+                    else if (m_Board.GameBoard[i, j].PieceType == Piece.e_PieceType.K && i_Player.PlayerPiece == Piece.e_PieceType.X)
+                    {
+                        counterPoints += 4;
+                    }
+
+                }
+            }
+
+            return counterPoints;
         }
         private void changeTurn()
         {
@@ -138,7 +165,53 @@ namespace DamkaProject
         }
         private void printSummaryOfTheGame()
         {
+            if (m_Winner == null)
+            {
+                Console.WriteLine("The game is over with tie.");
+            }
+            else
+            {
+                Console.WriteLine($"Good job {m_Winner.PlayerName}, you are the winner!");
+            }
+            Console.WriteLine($"{m_FirstPlayer.PlayerName} points is: {m_FirstPlayer.Points}");
+            Console.WriteLine($"{m_SecondPlayer.PlayerName} points is: {m_SecondPlayer.Points}");
+        }
+        private bool doYouWantToPlayAnotherRound()
+        {
+            bool isValid = false;
+            bool wantToPlay = false;
+            int choice = -1;
+            while (!isValid)
+            {
+                Console.WriteLine("For playing another round enter 0.");
+                Console.WriteLine("For finish the game and exit enter 1.");
+                String input = Console.ReadLine();
+                if (int.TryParse(input, out choice))
+                {
+                    if (!isValidChoice(choice))
+                    {
+                        Console.WriteLine("Invalid input! Only 0 or 1 are valid choices.");
+                    }
+                    else
+                    {
+                        isValid = true;
+                        if (choice == 0)
+                        {
+                            wantToPlay = true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Only 0 or 1 are valid choices.");
+                }
+            }
 
+            return wantToPlay;
+        }
+        private void gameIsOverMessage()
+        {
+            Console.WriteLine("Thank you for playing with us, have a nice day!");
         }
         private void updateNumberOfPices()
         {
@@ -206,6 +279,11 @@ namespace DamkaProject
             {
                 GameOver = true;
             }
+
+            if (GameOver)
+            {
+                m_Board.PrintBoard();
+            }
         }
         private void printPreviousMove(Player i_currentPlayer, Point i_From, Point i_To, bool samePlayer)
         {
@@ -245,6 +323,14 @@ namespace DamkaProject
                 Console.ReadLine();
             }
 
+        }
+        private void init()
+        {
+            m_Board = new Board(m_Board.Size);
+            setTheNumberOfPicesToThePlayers();
+            m_CurrentPlayerTurn = m_FirstPlayer;
+            m_Winner = null;
+            m_GameOver = false;
         }
 
 
