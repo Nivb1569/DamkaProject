@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace DamkaProject
+namespace Ex02
 {
     class Player
     {

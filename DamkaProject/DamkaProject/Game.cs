@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ex02;
 
-namespace DamkaProject
+namespace Ex02
 {
     class Game
     {

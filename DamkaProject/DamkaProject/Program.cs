@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DamkaProject
+namespace Ex02
 {
     class Program
     {
@@ -24,8 +24,6 @@ namespace DamkaProject
 
 
 משימות שנותרו: 
--מחיקת המסך בין כל תור 
-- אם באלנו בינה מלאכותית אז אם המחשב מגיע לשורה אחת לפני אחרונה הוא יבחר להפוך למלך
 - מה קורה במצב שאין מהלכים-מחשב+שחקן choseNextMove
 - 
 
